@@ -1,11 +1,23 @@
 install.packages("iNEXT")
 install.packages("SoundShape")
+install.packages("tuneR")
+install.packages("seewave")
+#install.packages("geomorph")
+#install.packages("rgl")
 
 library(pacman)
 library(psych)
 library(tidyverse)
 library(iNEXT)
 library(SoundShape)
+library(tuneR)
+library(seewave)
+
+?`SoundShape-package`
+
+
+#library(rgl)
+#library(geomorph)
 # How to be a quantitative econologist; The 'A to R of Green Mathematics and Statistics
   # Jason Matthiopolous 
 
