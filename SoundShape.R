@@ -74,6 +74,7 @@ writeWave(cut.centralis, filename = file.path(wav.at, "cut.centralis.wav"), exte
 writeWave(cut.kroyeri, filename = file.path(wav.at, "cut.kroyeri.wav"), extensible = FALSE)
 
 # 3 STEPS TO AVOID ERRORS----
+
 # 1. define sound window----
 
 # this is the process of examining the whole clip: time (xaxis) and freq (yaxis)
@@ -81,18 +82,23 @@ writeWave(cut.kroyeri, filename = file.path(wav.at, "cut.kroyeri.wav"), extensib
 # it can be seen that kroyeri has the largest freq (about 3.5) & time (about 0.6) duration
   # so these dimensions should be applied to all for comparable charting
 
+?spectro
 # Spectrogram plots using standardized sound window dimensions
-par(mfrow=c(2,2), mar=c(4,4,2,2))
+par(mfrow=c(2,2), mar=c(4,4,2,2)) # parameters for aligning charts side by side
 seewave::spectro(cut.centralis, flim=c(0, 4), tlim=c(0, 0.8), main="data(centralis)",
-                 wl=512, f=44100, ovlp=70, grid=FALSE, scale=FALSE)
+                 wl=512, f=44100, ovlp=70, grid=FALSE, scale=FALSE) # if scale and grid = TRUE they will be plotted separately
 seewave::spectro(cut.cuvieri, flim=c(0, 4), tlim=c(0, 0.8), main="data(cuvieri)", 
                  wl=512, f=44100, ovlp=70, grid=FALSE, scale=FALSE)
 seewave::spectro(cut.kroyeri, flim=c(0, 4), tlim=c(0, 0.8), main="data(kroyeri)", 
                  wl=512, f=44100, ovlp=70, grid=FALSE, scale=FALSE)
 
+
 # 2. align units at the beginning of the sound window----
+
 # The eigensound protocol also requires acoustic units to be placed at the 
   # beginning of a sound window before proceeding with the analysis.
+
+  # looking at the charts in step 1 above, can see that the sound units start at different times
 
 # Place sounds at the beginning of a sound window
 align.wave(wav.at=wav.at, wav.to="Aligned", time.length = 0.8)
@@ -103,16 +109,23 @@ eigensound(analysis.type = "twoDshape", wav.at = file.path(wav.at, "Aligned"),
 store.at
 # Go to folder specified by store.at and check jpeg files created
 
-# 3. Set relative amplitude background----
-#
 
+# 3. Set relative amplitude background----
+
+  # WHAT IS THIS DOING?
+    # TAKE SOME TIME BIG SCREEN TO ADJUST PARAMETERS. LONG LOADING TIMES!
+
+?spectro
 # 2D spectrogram with curves of relative amplitude at -25 dB
+    # this is 'contlevels'.. trial and error to define. e.g. setting amplitude range to -50 instead of -25 does not create a good image 
 par(mfrow=c(1,2), mar=c(4,4,1,1))
 s.kro <- seewave::spectro(cut.kroyeri, flim=c(0, 4), tlim = c(0, 0.8),  
-                          grid=F, scale=F, f=44100, wl=512, ovlp=70, cont=TRUE, 
+                          grid=F, scale=F, f=44100, wl=512, ovlp=70, fastdisp=TRUE, cont=TRUE, 
                           contlevels = seq(-25, -25, 1), collevels = seq(-40, 0, 0.1))
+#> This took quite a lot of time to display this graphic, you may set 'fastdisp=TRUE' for a faster, but less accurate, display
 
 # 3D spectrogram (with a lower dBlevel for illustrative purpuses)
+  # changing dblevel to 60 for example makes it more noisy, going to 10 is less visible
 threeDspectro(cut.kroyeri, dBlevel=40, flim=c(0, 4), tlim=c(0, 0.8), main="",
               colkey=list(plot=FALSE), cex.axis=0.4, cex.lab=0.8, resfac=2)
 
