@@ -12,7 +12,7 @@ data(cuvieri)
 
 # Select acoustic unit from sample
 cuvieri.cut <- seewave::cutw(cuvieri, f=44100, from = 0.05, to=0.45, output="Wave")
-
+?cutw
 # 3D spectrogram
 par(mfrow=c(1,2), mar=c(0,2,1,0)) # view side by side
 threeDspectro(cuvieri.cut, flim=c(0, 2.5), 
