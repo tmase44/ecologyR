@@ -96,9 +96,35 @@ eigensound(analysis.type = "twoDshape", wav.at = file.path(wav.at, "Aligned2"),
 store.at
 
 par(mfrow=c(1,2), mar=c(4,4,1,1))
-s.kro <- seewave::spectro(cut.blackhb, flim=c(0, 6), tlim = c(0, 1),  
+s.kro <- seewave::spectro(cut.blackhb, flim=c(0, 7), tlim = c(0, 1),  
                           grid=F, scale=F, f=44100, wl=512, ovlp=70, fastdisp=TRUE, cont=TRUE, 
                           contlevels = seq(-25, -25, 1), collevels = seq(-60, 0, 0.1))
 #> This took quite a lot of time to display this graphic, you may set 'fastdisp=TRUE' for a faster, but less accurate, display
+
+# 3D spectrogram (with a lower dBlevel for illustrative purpuses)
+# changing dblevel to 60 for example makes it more noisy, going to 10 is less visible
+threeDspectro(cut.blackhb, dBlevel=40, flim=c(0, 7), tlim=c(0, 1), main="",
+              colkey=list(plot=FALSE), cex.axis=0.4, cex.lab=0.8, resfac=2)
+
+# Set background at -40 dB and remove -Inf values from spectrogram data 
+for(i in 1:length(s.kro$amp)){if(s.kro$amp[i] == -Inf |s.kro$amp[i] <= -40)
+{s.kro$amp[i] <- -40}}
+
+# Add curve of relative amplitude
+plot3D::contour3D(x=s.kro$time, y=s.kro$freq, colvar=t(s.kro$amp), z=-25,
+                  plot=T, add=T, addbox=F, col="black", lwd=1.9, nlevels=2, dDepth=0.25)
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
